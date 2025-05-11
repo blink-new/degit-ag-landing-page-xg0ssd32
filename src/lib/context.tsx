@@ -59,11 +59,13 @@ interface AppProviderProps {
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   // Theme state
   const [theme, setThemeState] = useState<Theme>(() => {
+    // Check if there's a saved theme preference
     const savedTheme = localStorage.getItem('theme') as Theme | null;
     if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
     
-    // Default to dark if no saved preference
-    return 'light';
+    // If no saved preference, check system preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? 'dark' : 'light';
   });
 
   // Language state

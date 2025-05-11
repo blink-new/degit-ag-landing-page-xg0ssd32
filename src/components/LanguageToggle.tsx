@@ -20,8 +20,10 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
       size="sm" 
       onClick={toggleLanguage}
       className={cn("font-medium transition-colors", className)}
+      aria-label={language === 'en' ? 'Switch to German' : 'Switch to English'}
     >
-      {language === 'en' ? 'EN' : 'DE'}
+      {/* Show the language you can switch to, not the current one */}
+      {language === 'en' ? 'DE' : 'EN'}
     </Button>
   );
 }
