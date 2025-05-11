@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Theme } from './types';
-import { Translations, de, en, useTranslations } from './i18n';
+import { Translations, useTranslations } from './i18n';
 
 // Theme Context
 type ThemeContextType = {
@@ -60,7 +60,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   // Theme state
   const [theme, setThemeState] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('theme') as Theme | null;
-    return savedTheme || 'system';
+    if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
+    
+    // Default to dark if no saved preference
+    return 'light';
   });
 
   // Language state
@@ -94,33 +97,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   useEffect(() => {
     const root = window.document.documentElement;
     
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const currentTheme = theme === 'system' ? systemTheme : theme;
-    
-    if (currentTheme === 'dark') {
+    if (theme === 'dark') {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
-  }, [theme]);
-
-  // Listen for system theme changes
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    const handleChange = () => {
-      if (theme === 'system') {
-        const root = window.document.documentElement;
-        if (mediaQuery.matches) {
-          root.classList.add('dark');
-        } else {
-          root.classList.remove('dark');
-        }
-      }
-    };
-    
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme]);
 
   return (

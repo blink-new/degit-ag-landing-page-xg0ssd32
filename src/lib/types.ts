@@ -46,4 +46,4 @@ export enum SectionId {
 }
 
 // Theme types
-export type Theme = 'dark' | 'light' | 'system';
+export type Theme = 'dark' | 'light';

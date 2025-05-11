@@ -7,7 +7,7 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
       <Toaster position="top-right" />
       <App />
     </ThemeProvider>
